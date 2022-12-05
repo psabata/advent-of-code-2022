@@ -10,12 +10,16 @@ class InputHelper(private val resourceFileName: String) {
 
     fun <R> readGroups(transform: (String) -> R): List<R> {
         return getFile().readText()
-            .split(Regex("^\\s*$", RegexOption.MULTILINE)).map { it.trim() }
+            .split(Regex("^\\s*$", RegexOption.MULTILINE))
             .map(transform)
     }
 
+    fun readStringGroups(): List<String> {
+        return readGroups { it }
+    }
+
     fun readIntGroups(): List<List<Int>> {
-        return readGroups { group -> group.split(System.lineSeparator()).map { it.toInt() } }
+        return readGroups { group -> group.trim().split(System.lineSeparator()).map { it.toInt() } }
     }
 
     fun <R> readLines(transform: (String) -> R): List<R> {
